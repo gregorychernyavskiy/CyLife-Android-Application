@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https:fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=sqap" rel="stylesheet">
+    <title>Student Join</title>
+
+    <style>
+        body {
+            background-color: #242424;
+        }
+
+        input {
+            background-color: #3c3c3c;
+            border-style: none;
+            border-radius: 3px;
+
+            color: white;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.25rem;
+        }
+
+        button {
+            backgound-color: #3c3c3c;
+            border-style: none;
+            border-color: purple;
+            border-radius: 10px;
+
+            color: white;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.25rem;
+        }
+        button:hover {
+            background-color: #4d4d4d;
+        }
+
+        textarea {
+            background-color: #3c3c3c;
+            border-style: none;
+            border-radius: 3px;
+
+            color: white;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.25rem;
+        }
+    </style>
+</head>
+<body>
+
+<table>
+    <tr>
+        <td colspan="2">
+            <input
+                style="width: 200px"
+                width="10px"
+                type="text"
+                id="username"
+                placeholder="Username"
+            />
+            <button style="width: 120px" type="button" onclick="connect();">Connect</button>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <textarea style="width: 880px" readonly="true" rows="10" cols="80" id="log"></textarea>
+        </td>
+    </tr>
+</table>
+</body>
+
+<script>
+    var ws;
+
+    function connect() {
+        const username = document.getElementById("username").value;
+        const url = "ws://localhost:8080/chat/" + username;
+
+        ws = new WebSocket(url);
+
+        ws.onmessage = function (event) {
+            console.log(event.data);
+
+            // display in browser
+            const log = document.getElementById("log");
+            log.innerHTML += event.data + "\n";
+        };
+
+        ws.onopen = function (event) {
+            const log = document.getElementById("log");
+            log.innerHTML += "Greetings, " + username + ", welcome to " + event.currentTarget.url + "\n";
+        };
+    }
+</script>
+</html>
