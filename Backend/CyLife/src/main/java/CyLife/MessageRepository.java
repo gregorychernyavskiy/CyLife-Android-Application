@@ -1,4 +1,4 @@
-package CyLife.Websockets.joinClub;
+package CyLife.Websockets;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -1,4 +1,4 @@
-package CyLife.Websockets.chat;
+package CyLife.Websockets;
 
 import java.util.Date;
 
@@ -18,7 +18,7 @@ import lombok.Data;
 @Table(name = "messages")
 @Data
 public class Message {
-	@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -31,14 +31,14 @@ public class Message {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "sent")
     private Date sent = new Date();
-	
-	
-	public Message() {};
-	
-	public Message(String userName, String content) {
-		this.userName = userName;
-		this.content = content;
-	}
+
+
+    public Message() {};
+
+    public Message(String userName, String content) {
+        this.userName = userName;
+        this.content = content;
+    }
 
     public Long getId() {
         return id;
@@ -72,5 +72,5 @@ public class Message {
         this.sent = sent;
     }
 
-    
+
 }
