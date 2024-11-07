@@ -18,6 +18,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+import Cylife.*;
+
 @Controller      // this is needed for this to be an endpoint to springboot
 @ServerEndpoint(value = "/joinClub/{clubId}/{studentName}")  // this is Websocket url
 public class StudentJoinSocket {
