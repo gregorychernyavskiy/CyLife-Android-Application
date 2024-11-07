@@ -1,5 +1,6 @@
 package com.example.cylife;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -31,13 +32,23 @@ public class JoinClubActivity extends AppCompatActivity {
     private RequestQueue requestQueue;
     private Button backButton;
 
+    private String username;
+    private int studentID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join_club);
 
         Button backButton = findViewById(R.id.backButton);
-        backButton.setOnClickListener(view -> finish());
+        backButton.setOnClickListener(view -> {
+            Intent intent = new Intent(JoinClubActivity.this, EditClub.class);
+            startActivity(intent);
+        });
+
+        Bundle extras = getIntent().getExtras();
+        studentID = extras.getInt("userId");  // this will come from Welcome
+        username = extras.getString("username");  // this will come from Welcome
 
         searchBar = findViewById(R.id.searchBar);
         recyclerView = findViewById(R.id.clubListRecyclerView);
@@ -46,6 +57,8 @@ public class JoinClubActivity extends AppCompatActivity {
         clubList = new ArrayList<>();
         clubAdapter = new ClubAdapter(clubList, club -> {
             //NEED TO IMPLEMENT JOIN FUNCTION< CURRENTLY ON CLICKING JOIN BUTTON IT WILL SAY CLUB JOINED
+            String serverUrl = "http://coms-3090-065.class.las.iastate.edu:8080/joinClub/" + club + "/" + username; // club is club ID here
+            WebSocketManager.getInstance().connectWebSocket(serverUrl);
             Toast.makeText(this, "Joined " + club.getName(), Toast.LENGTH_SHORT).show();
         });
         recyclerView.setAdapter(clubAdapter);
