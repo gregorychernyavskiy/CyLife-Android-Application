@@ -57,7 +57,8 @@
                 id="username"
                 placeholder="Username"
             />
-            <button style="width: 120px" type="button" onclick="connect();">Connect</button>
+            <button style="width: 120px" type="button" onclick="connectAsClub();">Connect As Club</button>
+            <button style="width: 120px" type="button" onclick="joinAsStudent();">Join As Student</button>
         </td>
     </tr>
     <tr>
@@ -71,9 +72,9 @@
 <script>
     var ws;
 
-    function connect() {
-        const username = document.getElementById("username").value;
-        const url = "ws://localhost:8080/chat/" + username;
+    function connectAsClub() {
+        const clubId = document.getElementById("clubId").value;
+        const url = "ws://localhost:8080/joinClub/" + clubId;
 
         ws = new WebSocket(url);
 
@@ -87,7 +88,26 @@
 
         ws.onopen = function (event) {
             const log = document.getElementById("log");
-            log.innerHTML += "Greetings, " + username + ", welcome to " + event.currentTarget.url + "\n";
+            log.innerHTML += "Greetings, " + clubId + ", welcome to " + event.currentTarget.url + "\n";
+        };
+    }
+    function joinAsStudent() {
+        const studentName = document.getElementById("studentName").value;
+        const url = "ws://localhost:8080/joinClub/" + studentName;
+
+        ws = new WebSocket(url);
+
+        ws.onmessage = function (event) {
+            console.log(event.data);
+
+            // display in browser
+            const log = document.getElementById("log");
+            log.innerHTML += event.data + "\n";
+        };
+
+        ws.onopen = function (event) {
+            const log = document.getElementById("log");
+            log.innerHTML += "Greetings, " + studentName + ", welcome to " + event.currentTarget.url + "\n";
         };
     }
 </script>
