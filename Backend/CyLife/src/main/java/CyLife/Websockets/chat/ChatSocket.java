@@ -1,4 +1,4 @@
-package CyLife.Websockets.chat;
+package CyLife.Websockets;
 
 import java.io.IOException;
 import java.util.Hashtable;
