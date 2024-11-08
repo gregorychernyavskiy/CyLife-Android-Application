@@ -1,12 +1,12 @@
-package CyLife.Websockets;
+package CyLife.Websockets.joinClub;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 
 @Configuration
-public class WebSocketConfig {
-	@Bean
+public class JoinClubSocketConfig {
+	@Bean(name = "joinClubEndpointExporter")
 	public ServerEndpointExporter serverEndpointExporter() {
 		return new ServerEndpointExporter();
 	}

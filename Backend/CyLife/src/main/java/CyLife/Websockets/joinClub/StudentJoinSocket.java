@@ -1,4 +1,4 @@
-package CyLife.Websockets;
+package CyLife.Websockets.joinClub;
 
 import java.io.IOException;
 import java.util.Hashtable;
@@ -19,22 +19,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 @Controller      // this is needed for this to be an endpoint to springboot
-@ServerEndpoint(value = "/joinClub/{clubId}/{studentName}")  // this is Websocket url
+@ServerEndpoint(value = "/joinClub/join/{clubId}/{studentName}")  // this is Websocket url
 public class StudentJoinSocket {
 
     // cannot autowire static directly (instead we do it by the below
     // method
-    private static MessageRepository msgRepo;
+    private static JoinClubMessageRepository msgRepo;
 
     /*
-     * Grabs the MessageRepository singleton from the Spring Application
+     * Grabs the JoinClubMessageRepository singleton from the Spring Application
      * Context.  This works because of the @Controller annotation on this
      * class and because the variable is declared as static.
      * There are other ways to set this. However, this approach is
      * easiest.
      */
     @Autowired
-    public void setMessageRepository(MessageRepository repo) {
+    public void setJoinClubMessageRepository(JoinClubMessageRepository repo) {
         msgRepo = repo;  // we are setting the static variable
     }
 

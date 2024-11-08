@@ -1,4 +1,4 @@
-package CyLife.Websockets;
+package CyLife.Websockets.joinClub;
 
 import java.util.Date;
 
@@ -17,7 +17,7 @@ import lombok.Data;
 @Entity
 @Table(name = "messages")
 @Data
-public class Message {
+public class JoinClubMessage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -33,9 +33,9 @@ public class Message {
     private Date sent = new Date();
 
 
-    public Message() {};
+    public JoinClubMessage() {};
 
-    public Message(String userName, String content) {
+    public JoinClubMessage(String userName, String content) {
         this.userName = userName;
         this.content = content;
     }
@@ -71,6 +71,4 @@ public class Message {
     public void setSent(Date sent) {
         this.sent = sent;
     }
-
-
 }
