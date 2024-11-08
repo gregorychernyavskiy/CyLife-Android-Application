@@ -1,4 +1,4 @@
-package CyLife.Websockets;
+package CyLife.Websockets.chat;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package CyLife.Websockets;
+package CyLife.Websockets.chat;
 
 import java.util.Date;
 
@@ -71,6 +71,4 @@ public class Message {
     public void setSent(Date sent) {
         this.sent = sent;
     }
-
-
 }
