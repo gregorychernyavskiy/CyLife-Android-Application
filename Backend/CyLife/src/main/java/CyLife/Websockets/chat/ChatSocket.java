@@ -24,17 +24,17 @@ public class ChatSocket {
 
   // cannot autowire static directly (instead we do it by the below
   // method
-	private static MessageRepository msgRepo; 
+	private static ChatMessageRepository msgRepo; 
 
 	/*
-   * Grabs the MessageRepository singleton from the Spring Application
+   * Grabs the ChatMessageRepository singleton from the Spring Application
    * Context.  This works because of the @Controller annotation on this
    * class and because the variable is declared as static.
    * There are other ways to set this. However, this approach is
    * easiest.
 	 */
 	@Autowired
-	public void setMessageRepository(MessageRepository repo) {
+	public void setChatMessageRepository(ChatMessageRepository repo) {
 		msgRepo = repo;  // we are setting the static variable
 	}
 
@@ -84,7 +84,7 @@ public class ChatSocket {
 		}
 
 		// Saving chat history to repository
-		msgRepo.save(new Message(username, message));
+		msgRepo.save(new ChatMessage(username, message));
 	}
 
 
@@ -139,12 +139,12 @@ public class ChatSocket {
 
   // Gets the Chat history from the repository
 	private String getChatHistory() {
-		List<Message> messages = msgRepo.findAll();
+		List<ChatMessage> messages = msgRepo.findAll();
     
     // convert the list to a string
 		StringBuilder sb = new StringBuilder();
 		if(messages != null && messages.size() != 0) {
-			for (Message message : messages) {
+			for (ChatMessage message : messages) {
 				sb.append(message.getUserName() + ": " + message.getContent() + "\n");
 			}
 		}
