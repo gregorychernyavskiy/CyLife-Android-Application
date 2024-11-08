@@ -50,6 +50,7 @@ public class WelcomeActivityClub extends AppCompatActivity implements WebSocketL
         clubButton.setOnClickListener(view -> {
             // Start the Club Activity
             Intent intent = new Intent(WelcomeActivityClub.this, EditClub.class);
+            intent.putExtra("userId", clubId);  // key-value to pass to the Welcome
             startActivity(intent);
         });
 

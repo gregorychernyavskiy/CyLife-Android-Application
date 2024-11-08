@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,9 +17,11 @@ import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 public class EditClub extends AppCompatActivity {
 
+    private TextView welcomeText;
     private EditText nameField, oldPasswordField, newPasswordField, confirmPasswordField;
     private Button saveButton, backButton;
 
@@ -30,6 +33,7 @@ public class EditClub extends AppCompatActivity {
         setContentView(R.layout.activity_edit_club);
 
         // Initialize views
+        welcomeText = findViewById(R.id.club_name_text);
         nameField = findViewById(R.id.etClubName);
 
         oldPasswordField = findViewById(R.id.etPasswordOld);
@@ -59,10 +63,12 @@ public class EditClub extends AppCompatActivity {
 
         backButton.setOnClickListener(v -> {
             // Redirect to Login Activity
-            Intent intent = new Intent(EditClub.this, WelcomeActivityStudent.class);
+            Intent intent = new Intent(EditClub.this, WelcomeActivityClub.class);
             intent.putExtra("userId", clubId);
             startActivity(intent);
         });
+
+        welcomeText.setText("Welcome club " + clubId);
     }
 
     private void editUser(String name, String password) {
