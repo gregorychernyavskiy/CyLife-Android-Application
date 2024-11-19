@@ -24,7 +24,7 @@ maven-build:
 
     refs:
 
-      - SETHCLOVER_CICD
+      - Seth_cicd
 
     changes:
 
@@ -52,7 +52,7 @@ maven-test:
 
     refs:
 
-      - SETHCLOVER_CICD
+      - Seth_cicd
 
     changes:
 
