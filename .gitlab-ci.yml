@@ -1,38 +1,38 @@
 stages:
   - androidbuild
-  - androidtest 
+  - androidtest
 
 android-build:
-  image: afirefly/android-ci:java17 # Docker image that has Android environments installed     gjandres/android-ci:latest
-  stage: androidbuild               # one of the stages listed above
+  image: afirefly/android-ci:java17 # Docker image that has Android environments installed
+  stage: androidbuild               # One of the stages listed above
   tags:
-   - Dhvani_tag                    # change to your runner's tag
-  before_script:                    # enable gradlew, change 'Frontend' to where you have 'gradlew'
+    - Dhvani_tag                    # Change to your runner's tag
+  before_script:                    # Enable gradlew and prepare environment
     - export GRADLE_USER_HOME=`pwd`/.gradle
-    - chmod +x ./Frontend/CyLife/gradle/wrapper/gradlew
+    - chmod +x ./Frontend/CyLife/gradlew   # Ensure gradlew is executable
   script:
-    - cd Frontend/CyLife/gradle/wrapper                   # change 'Frontend' to where you have 'gradlew' (do not add / in the beginning)
-    - ./gradlew build               # gradle build
+    - cd Frontend/CyLife            # Navigate to the Android project root directory
+    - ./gradlew build               # Run gradle build
   only:
     refs:
-      - main                        # only to trigger the pipeline when changes are pushed to 'main'
+      - main                        # Trigger only on changes to the 'main' branch
     changes:
-      - Frontend/**/*               # more specifically - only when changes are made inside the 'Frontend' folder
+      - Frontend/**/*               # Trigger only if changes are made inside the 'Frontend' folder
 
 android-test:
-  image: afirefly/android-ci:java17
-  stage: androidtest               # one of the stages listed above
+  image: afirefly/android-ci:java17  # Docker image with Android environments installed
+  stage: androidtest                # One of the stages listed above
   tags:
-    - Dhvani_tag                   # change to your runner's tag
-  before_script:                   # enable gradlew, change 'Frontend' to where you have 'gradlew'
-     - export GRADLE_USER_HOME=`pwd`/.gradle
-     - chmod +x ./Frontend/CyLife/gradle/wrapper/gradlew
+    - Dhvani_tag                    # Change to your runner's tag
+  before_script:                    # Enable gradlew and prepare environment
+    - export GRADLE_USER_HOME=`pwd`/.gradle
+    - chmod +x ./Frontend/CyLife/gradlew   # Ensure gradlew is executable
   script:
-     - cd Frontend/CyLife/gradle/wrapper                  # change 'Frontend' to where you have 'gradlew' (do not add / in the beginning)
-     - ./gradlew test               # gradle test
+    - cd Frontend/CyLife            # Navigate to the Android project root directory
+    - ./gradlew test                # Run gradle test
   only:
     refs:
-      - CI/CD_Dhvani          # only to trigger the pipeline when changes are pushed to 'main'
+      - CI/CD_Dhvani                # Trigger only on changes to the 'CI/CD_Dhvani' branch
     changes:
-      - Frontend/**/*               # more specifically - only when changes are made inside the 'Frontend' folder
+      - Frontend/**/*               # Trigger only if changes are made inside the 'Frontend' folder
 
