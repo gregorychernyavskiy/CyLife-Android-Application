@@ -55,6 +55,7 @@ gen-external-apklibs
 
 # Package Files #
 *.jar
+!Frontend/CyLife/gradle/wrapper/gradle-wrapper.jar
 *.war
 *.nar
 *.ear
@@ -87,5 +88,5 @@ buildNumber.properties
 # ignoring DS_Store that the terminal created
 .DS_Store
 
-!Frontend/CyLife/gradle/wrapper/gradle-wrapper.jar
+
 # End of https://www.toptal.com/developers/gitignore/api/java,android,maven
