@@ -52,7 +52,7 @@ public class UserController {
     }
 
     // Endpoint to update user by id
-    @PutMapping("/update/byId/{id}")
+    @PutMapping("/update/{id}")
     public Map<String, Object> updateUser(
             @PathVariable int id, @RequestBody User updatedUser) {
         Map<String, Object> response = new HashMap<>();
@@ -117,6 +117,9 @@ public class UserController {
                 response.put("message", "User already exists.");
                 response.put("status", "409");
             } else {
+                if (newUser.getType() == null) {
+                    newUser.setType(UserType.STUDENT);
+                }
                 userRepository.save(newUser);
                 response.put("message", "User registered successfully.");
                 response.put("status", "201");
@@ -129,97 +132,51 @@ public class UserController {
         return response;
     }
 
-
-    @PutMapping("/update/byEmail/{email}")
-    public Map<String, Object> updateUser(
-            @PathVariable String email, @RequestBody User updatedUser) {
-        Map<String, Object> response = new HashMap<>();
-        try {
-            User existingUser = userRepository.findByEmail(email);
-            if (existingUser == null) {
-                response.put("message", "User not found with email: " + email);
-                response.put("status", "404");
-                return response;
-            }
-            existingUser.setName(updatedUser.getName());
-            existingUser.setEmail(updatedUser.getEmail());
-            existingUser.setPassword(updatedUser.getPassword());
-            existingUser.setType(updatedUser.getType());
-            userRepository.save(existingUser);
-            response.put("message", "User updated successfully.");
-            response.put("status", "200");
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.put("message", "Internal Server Error: " + e.getMessage());
-            response.put("status", "500");
-        }
-        return response;
-    }
-
-    @PutMapping("/editemail/{newEmail}")
-    public Map<String, String> changeEmail(@RequestBody User user, @PathVariable String newEmail){
-        Map<String, String> response = new HashMap<>();
-        boolean testForEmail = userRepository.existsByEmail(newEmail);
-        System.out.println("testForEmail");
-        if(testForEmail){
-            response.put("message", "The email \""+newEmail+"\" is already taken");
-            response.put("status", "409");
-            return response;
-        }
-        String oldEmail = user.getEmail();
-        User existingUser = userRepository.findByEmail(oldEmail);
-        if(existingUser != null){
-            response.put("message","Email updated successfully from "+oldEmail+" to "+newEmail);
-            response.put("status","200");
-            existingUser.setEmail(newEmail);
-            userRepository.save(existingUser);
-        } else {
-            response.put("message", "User not found with email: " + oldEmail);
-            response.put("status", "404");
-        }
-        return response;
-    }
-
-    @Transactional
-    @DeleteMapping("/delete/{email}")
-    public Map<String, Object> deleteUser(@PathVariable String email) {
-        Map<String, Object> response = new HashMap<>();
-        try {
-            if (!userRepository.existsByEmail(email)) {
-                response.put("message", "User not found with email: " + email);
-                response.put("status", "404");
-            } else {
-                userRepository.deleteByEmail(email);
-                response.put("message", "User deleted successfully.");
-                response.put("status", "200");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.put("message", "Internal Server Error: " + e.getMessage());
-            response.put("status", "500");
-        }
-        return response;
-    }
-
-    @PostMapping("/login")
+    @PostMapping({"/login"})
     public ResponseEntity<Map<String, Object>> loginUser(@RequestBody Map<String, String> credentials) {
-        Map<String, Object> response = new HashMap<>();
-        String email = credentials.get("email");
-        String password = credentials.get("password");
-        if (email == null || password == null) {
+        Map<String, Object> response = new HashMap();
+        String email = (String)credentials.get("email");
+        String password = (String)credentials.get("password");
+        if (email != null && password != null) {
+            User user = this.userRepository.findByEmail(email.trim());
+            if (user != null && user.getPassword().equals(password.trim())) {
+                response.put("message", "Login successful");
+                response.put("userType", user.getType());
+                response.put("userID", user.getUserId());
+                return ResponseEntity.ok(response);
+            } else {
+                response.put("message", "Invalid email or password.");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+            }
+        } else {
             response.put("message", "Email or password is missing.");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
-        User user = userRepository.findByEmail(email.trim());
+    }
 
-        if (user != null && user.getPassword().equals(password.trim())) {
-            response.put("message", "Login successful");
-            response.put("userType", user.getType());
-            response.put("userID", user.getUserId());
-            return ResponseEntity.ok(response);
-        } else {
-            response.put("message", "Invalid email or password.");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+    @PutMapping({"/user/{userId}/addClub/{clubId}"})
+    public ResponseEntity<Map<String, Object>> addUserToClub(@PathVariable int userId, @PathVariable int clubId) {
+        Map<String, Object> response = new HashMap();
+
+        try {
+            User user = this.userRepository.findById(userId);
+            Club club = (Club)this.clubRepository.findById(clubId).orElse((Object)null);
+            if (user == null) {
+                response.put("message", "User not found with id: " + userId);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            } else if (club == null) {
+                response.put("message", "Club not found with id: " + clubId);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            } else {
+                user.setClub(club);
+                this.userRepository.save(user);
+                response.put("message", "User added to club successfully.");
+                return ResponseEntity.ok(response);
+            }
+        } catch (Exception var6) {
+            var6.printStackTrace();
+            response.put("message", "Internal Server Error: " + var6.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 }
