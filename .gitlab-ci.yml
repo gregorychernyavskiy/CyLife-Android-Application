@@ -21,12 +21,3 @@ maven-build:
       - greg_cicd
     changes:
       - Backend/**/*
-debug:
-  stage: mavenbuild
-  tags:
-    - Greg
-  script:
-    - echo "JAVA_HOME=$JAVA_HOME"
-    - java -version
-    - echo "Maven Path: $(which mvn)"
-    - mvn --version
