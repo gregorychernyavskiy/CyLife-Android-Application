@@ -24,6 +24,7 @@ maven-build:
   script:
     - cd Backend/CyLife
     - JAVA_HOME=/usr/lib/jvm/java-17-openjdk mvn clean package
+
   only:
     refs:
       - greg_cicd
