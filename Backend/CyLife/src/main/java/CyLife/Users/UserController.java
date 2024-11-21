@@ -24,6 +24,9 @@ public class UserController {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    private ClubRepository clubRepository;
+
     // Endpoint to get all users
     @GetMapping(path = "/users")
     List<User> getAllUsers() {
@@ -118,7 +121,7 @@ public class UserController {
                 response.put("status", "409");
             } else {
                 if (newUser.getType() == null) {
-                    newUser.setType(User.User.UserType.STUDENT);
+                    newUser.setType(User.UserType.STUDENT);
                     newUser.setType(User.UserType.STUDENT);
                 }
                 userRepository.save(newUser);
@@ -161,7 +164,7 @@ public class UserController {
 
         try {
             User user = this.userRepository.findById(userId);
-            Club club = (Club)this.clubRepository.findById(clubId).orElse((Object)null);
+            Club club = this.clubRepository.findById(clubId).orElse(null);
             if (user == null) {
                 response.put("message", "User not found with id: " + userId);
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);

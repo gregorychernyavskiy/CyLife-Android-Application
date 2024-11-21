@@ -124,14 +124,4 @@ public class User {
     public void setClub(Club club) {
         this.club = club;
     }
-
-    public static enum UserType {
-        STUDENT,
-        STAFF,
-        CLUB,
-        ORG;
-
-        private UserType() {
-        }
-    }
 }
