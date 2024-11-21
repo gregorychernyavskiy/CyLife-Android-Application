@@ -12,7 +12,7 @@ debug:
     - export PATH=$JAVA_HOME/bin:$PATH
     - echo "JAVA_HOME=$JAVA_HOME"
     - java -version
-    - mvn -version
+    - mvn --version
 
 maven-build:
   stage: mavenbuild
