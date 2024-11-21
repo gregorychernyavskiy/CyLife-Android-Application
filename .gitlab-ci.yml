@@ -1,7 +1,8 @@
 stages:
   - mavenbuild
-
-maven-build:
+  - maventest
+  
+maven-build:            
   stage: mavenbuild
   before_script:
     - export JAVA_HOME=/usr/lib/jvm/java-17-openjdk
@@ -12,10 +13,24 @@ maven-build:
     - java -version
     - mvn --version
   tags:
-    - Greg
+    - Greg      # <-- change to your runner's tag
   script:
-    - cd Backend/CyLife
+    - cd Backend/CyLife       # change 'Backend' to to where you have the pom.xml (do not add / in the beginning)
     - mvn clean package
+  only:
+    refs:
+      - greg_cicd
+    changes:
+      - Backend/**/*
+
+
+maven-test:             
+  stage: maventest
+  tags:
+    - Greg     # <-- change to your runner's tag
+  script:
+    - cd Backend/CyLife       # change 'Backend' to to where you have the pom.xml (do not add / in the beginning)
+    - mvn test
   only:
     refs:
       - greg_cicd
