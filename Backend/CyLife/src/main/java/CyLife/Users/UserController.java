@@ -118,7 +118,8 @@ public class UserController {
                 response.put("status", "409");
             } else {
                 if (newUser.getType() == null) {
-                    newUser.setType(UserType.STUDENT);
+                    newUser.setType(User.User.UserType.STUDENT);
+                    newUser.setType(User.UserType.STUDENT);
                 }
                 userRepository.save(newUser);
                 response.put("message", "User registered successfully.");
