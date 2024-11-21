@@ -1,33 +1,42 @@
 stages:
+  - debug
   - mavenbuild
   - maventest
-  
-maven-build:            
+
+debug:
+  stage: debug
+  tags:
+    - Greg
+  script:
+    - export JAVA_HOME=/usr/lib/jvm/java-17-openjdk
+    - export PATH=$JAVA_HOME/bin:$PATH
+    - echo "JAVA_HOME=$JAVA_HOME"
+    - java -version
+    - mvn -version
+
+maven-build:
   stage: mavenbuild
   before_script:
     - export JAVA_HOME=/usr/lib/jvm/java-17-openjdk
     - export PATH=$JAVA_HOME/bin:$PATH
-    - java -version
-    - mvn -version
   tags:
-    - Greg      # <-- change to your runner's tag
+    - Greg
   script:
-    - cd Backend/CyLife       # change 'Backend' to to where you have the pom.xml (do not add / in the beginning)
-    - mvn clean package
+    - cd Backend/CyLife
+    - JAVA_HOME=/usr/lib/jvm/java-17-openjdk mvn clean package
   only:
     refs:
       - greg_cicd
     changes:
       - Backend/**/*
 
-
-maven-test:             
+maven-test:
   stage: maventest
   tags:
-    - Greg     # <-- change to your runner's tag
+    - Greg
   script:
-    - cd Backend/CyLife       # change 'Backend' to to where you have the pom.xml (do not add / in the beginning)
-    - mvn test
+    - cd Backend/CyLife
+    - JAVA_HOME=/usr/lib/jvm/java-17-openjdk mvn test
   only:
     refs:
       - greg_cicd
