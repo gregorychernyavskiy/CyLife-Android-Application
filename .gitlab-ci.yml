@@ -1,59 +1,29 @@
 stages:
-
   - mavenbuild
-
   - maventest
 
-  
-
 maven-build:            
-
   stage: mavenbuild
-
   tags:
-
     - Seth
-
   script:
-
     - cd Backend/CyLife
-
     - mvn package
-
   only:
-
     refs:
-
       - Seth_cicd
-
     changes:
-
       - Backend/**/*
 
- 
-
- 
-
 maven-test:             
-
   stage: maventest
-
   tags:
-
     - Seth
-
   script:
-
     - cd Backend/CyLife
-
     - mvn test
-
   only:
-
     refs:
-
       - Seth_cicd
-
     changes:
-
       - Backend/**/*
