@@ -57,11 +57,6 @@ public class JoinClubActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         clubList = new ArrayList<>();
-//        clubAdapter = new ClubAdapter(clubList, club -> {
-//            //NEED TO IMPLEMENT JOIN FUNCTION< CURRENTLY ON CLICKING JOIN BUTTON IT WILL SAY CLUB JOINED
-//            String serverUrl = "http://coms-3090-065.class.las.iastate.edu:8080/joinClub/" + club + "/" + username; // club is club ID here
-//            WebSocketManager.getInstance().connectWebSocket(serverUrl);
-//        });
 
 
         clubAdapter = new ClubAdapter(clubList, club -> {
@@ -190,6 +185,7 @@ public class JoinClubActivity extends AppCompatActivity {
                             Toast.makeText(this, "Joined " + club.getName(), Toast.LENGTH_SHORT).show();
                             club.setButtonText("Leave");
                             clubAdapter.notifyDataSetChanged();
+                            sendWebSocketMessage("join", club);
                         } else {
                             Toast.makeText(this, "Failed to join club", Toast.LENGTH_SHORT).show();
                         }
@@ -221,6 +217,7 @@ public class JoinClubActivity extends AppCompatActivity {
                             Toast.makeText(this, "Left " + club.getName(), Toast.LENGTH_SHORT).show();
                             club.setButtonText("Join");
                             clubAdapter.notifyDataSetChanged();
+                            sendWebSocketMessage("Leave", club);
                         } else {
                             Toast.makeText(this, "Failed to leave club", Toast.LENGTH_SHORT).show();
                         }
@@ -236,6 +233,20 @@ public class JoinClubActivity extends AppCompatActivity {
         );
 
         requestQueue.add(leaveRequest);
+    }
+
+    private void sendWebSocketMessage(String action, Club club) {
+        try {
+            JSONObject message = new JSONObject();
+            message.put("action", action);
+            message.put("studentId", studentID);
+            message.put("clubId", club.getId());
+
+            WebSocketManager.getInstance().sendMessage(message.toString());
+            Log.d("Websocket", "Message : " + message.toString());
+        } catch (JSONException e) {
+            Log.e("WebSocket", "Error in creating websocket message: " + e.getMessage());
+        }
     }
 
 }
