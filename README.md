@@ -2,7 +2,7 @@
 
 CyLife is a simple and powerful platform that helps students and staff connect through clubs and events. Whether you're organizing an event, chatting with your club, or keeping track of activities, CyLife makes it easy to stay involved and connected.
 
-**Vide:** https://www.youtube.com/watch?v=-FlByrdfhrc&list=PL6BdlkdKLEB9U0F4VMXt6Ck7DX6TAdupE&index=29
+**Video:** https://www.youtube.com/watch?v=-FlByrdfhrc&list=PL6BdlkdKLEB9U0F4VMXt6Ck7DX6TAdupE&index=29
 
 ## Features
 
